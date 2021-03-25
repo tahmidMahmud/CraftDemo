@@ -1,0 +1,27 @@
+version: "3"
+services:
+  pet-clinic-svcs:
+    build: ./pet-clinic-svcs
+    ports:
+      - "8080:8080"
+    networks:
+      - bridge
+  react-pet-clinic:
+    build: ./react-pet-clinic
+    ports:
+      - "80:80"
+    depends_on:
+      - pet-clinic-svcs
+    networks:
+      - bridge
+  load-test:
+    build: ./load-test
+    depends_on:
+      - pet-clinic-svcs
+    networks:
+      - bridge
+    volumes:
+      - ./reports:/reports
+networks:
+  bridge:
+    driver: bridge
